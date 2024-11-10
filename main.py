@@ -11,10 +11,10 @@ greeting = ''
 again = False
 
 @bot.message_handler(commands=['pozdravlenie'])
-def start(message):
+def startonemore(message):
     global again
     again = True
-    bot.send_message(message.from_user.id, "Вы регистрируете еще одно поздравление.\nУкажите, пожалуйста, имя и фамилию ✍️");
+    bot.send_message(message.from_user.id, "Вы регистрируете еще одно поздравление.\n\n🎄 Напишите Ваше имя 🎄\n\nПусть все знают от кого пришло новогоднее поздравление!");
     bot.register_next_step_handler(message, get_name);
 
 @bot.message_handler(commands=['start'])
@@ -30,7 +30,7 @@ def get_name(message):
         bot.send_message(message.from_user.id, "Вы указали неверные данные.\n(Возможно вы поставили пробел в начале)\n\nПожалуйста, укажите имя и фамилию снова ✍️")
         bot.register_next_step_handler(message, get_name)
     else:
-        bot.send_message(message.from_user.id, "🎄 Напишите новогоднее поздравление 🎄")
+        bot.send_message(message.from_user.id, "🎄 Напишите новогоднее поздравление")
         bot.register_next_step_handler(message, get_greeting)
 
 @bot.message_handler(content_types=['text'])
@@ -53,14 +53,14 @@ def startagain(message):
         bot.send_message(message.from_user.id, "Вы указали неверные данные.\n(Возможно вы поставили пробел в начале)\n\nПожалуйста, укажите имя и фамилию снова ✍️")
         bot.register_next_step_handler(message, get_name)
     else:
-        bot.send_message(message.from_user.id, "🎄 Напишите новогоднее поздравление 🎄")
+        bot.send_message(message.from_user.id, "🎄 Напишите новогоднее поздравление")
         bot.register_next_step_handler(message, get_greeting)
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
     global name, greeting, again
     if call.data == "yes":
-        bot.send_message(-4535565607, text=f"Имя: {name}\nПоздравление: {greeting}\n\nДата отправки: {datetime.datetime.now()}\nОтправил: {call.message.from_user.id}\n\nЗарегистрировано еще раз: {again}")
+        bot.send_message(-4577933909, text=f"Имя: {name}\nПоздравление: {greeting}\n\nДата отправки: {datetime.datetime.now()}\nОтправил: {call.message.from_user.id}\n\nЗарегистрировано еще раз(через /pozdravlenie): {again}")
         bot.answer_callback_query(call.id)
         bot.edit_message_text(text="Зарегистрировано ✅", chat_id=call.message.chat.id, message_id=call.message.id)
     elif call.data == "no":
